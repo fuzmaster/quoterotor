@@ -44,6 +44,7 @@ export function calculateQuoteTotals(quote) {
   const travel = quote.travelMode === 'mileage' ? mileage : customTravel
 
   const subtotal = shooting + editing + licensing + addons + revisions + travel
+
   return {
     shooting,
     editing,

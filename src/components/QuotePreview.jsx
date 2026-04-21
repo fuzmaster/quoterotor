@@ -7,7 +7,7 @@ export default function QuotePreview() {
   const premiumUnlocked = useAppStore((s) => s.premiumUnlocked)
 
   return (
-    <div className="card overflow-hidden">
+    <div className="card hidden overflow-hidden md:block">
       <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
         <div>
           <div className="text-sm font-semibold text-slate-900">Live Quote Preview</div>

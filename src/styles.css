@@ -4,7 +4,9 @@
   color-scheme: light;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -36,7 +38,7 @@ body {
 }
 
 .btn-secondary {
-  @apply bg-white text-slate-900 border border-slate-300 hover:bg-slate-50;
+  @apply border border-slate-300 bg-white text-slate-900 hover:bg-slate-50;
 }
 
 .section-title {

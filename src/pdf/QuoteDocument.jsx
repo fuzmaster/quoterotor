@@ -4,6 +4,7 @@ import {
   Text,
   View,
   StyleSheet,
+  Image,
 } from '@react-pdf/renderer'
 import { calculateQuoteTotals } from '../utils/calculations'
 import { formatCurrency } from '../utils/format'
@@ -30,6 +31,12 @@ export default function QuoteDocument({ quote, premiumUnlocked }) {
       paddingBottom: 14,
       borderBottomWidth: 1,
       borderBottomColor: '#e2e8f0',
+    },
+    logo: {
+      width: 120,
+      height: 48,
+      objectFit: 'contain',
+      marginBottom: 6,
     },
     brand: {
       fontSize: 20,
@@ -105,9 +112,14 @@ export default function QuoteDocument({ quote, premiumUnlocked }) {
       <Page size="LETTER" style={styles.page}>
         <View style={[styles.row, styles.header]}>
           <View>
-            <Text style={styles.brand}>{quote.businessName || 'QuoteRotor Media'}</Text>
+            {premiumUnlocked && quote.logoDataUrl ? (
+              <Image src={quote.logoDataUrl} style={styles.logo} />
+            ) : (
+              <Text style={styles.brand}>{quote.businessName || 'QuoteRotor Media'}</Text>
+            )}
             <Text style={styles.small}>Professional drone estimate</Text>
           </View>
+
           <View>
             <Text style={styles.small}>Estimate valid for {quote.validDays} days</Text>
           </View>

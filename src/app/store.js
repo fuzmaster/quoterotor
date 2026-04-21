@@ -50,8 +50,15 @@ export const useAppStore = create(
           profitCheck: { ...state.profitCheck, ...patch },
         })),
 
-      resetQuote: () => set({ quote: defaultQuote }),
-      resetProfitCheck: () => set({ profitCheck: defaultProfitCheck }),
+      resetQuote: () =>
+        set(() => ({
+          quote: { ...defaultQuote },
+        })),
+
+      resetProfitCheck: () =>
+        set(() => ({
+          profitCheck: { ...defaultProfitCheck },
+        })),
     }),
     {
       name: 'quoterotor-storage',
