@@ -13,7 +13,6 @@ export default function QuoteForm() {
   const updateQuote = useAppStore((s) => s.updateQuote)
   const resetQuote = useAppStore((s) => s.resetQuote)
   const premiumUnlocked = useAppStore((s) => s.premiumUnlocked)
-  const setPremiumUnlocked = useAppStore((s) => s.setPremiumUnlocked)
 
   function handleChange(e) {
     const { name, value } = e.target
@@ -60,11 +59,6 @@ export default function QuoteForm() {
 
   function removeLogo() {
     updateQuote({ logoDataUrl: '' })
-  }
-
-  function handleUnlockPremium() {
-    setPremiumUnlocked(true)
-    setIsPremiumModalOpen(false)
   }
 
   return (
@@ -298,7 +292,6 @@ export default function QuoteForm() {
       <PremiumModal
         isOpen={isPremiumModalOpen}
         onClose={() => setIsPremiumModalOpen(false)}
-        onUnlock={handleUnlockPremium}
       />
     </>
   )

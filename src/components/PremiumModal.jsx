@@ -1,9 +1,36 @@
-export default function PremiumModal({
-  isOpen,
-  onClose,
-  onUnlock,
-}) {
+import { useState } from 'react'
+
+export default function PremiumModal({ isOpen, onClose }) {
+  const [loading, setLoading] = useState(false)
+
   if (!isOpen) return null
+
+  async function handleCheckout() {
+    try {
+      setLoading(true)
+
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok || !data.url) {
+        throw new Error(data.error || 'Failed to create checkout session')
+      }
+
+      window.location.href = data.url
+    } catch (error) {
+      console.error(error)
+      alert('Could not start Stripe checkout.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
@@ -31,18 +58,20 @@ export default function PremiumModal({
             <div className="mt-1 text-3xl font-bold">$49 one-time</div>
             <div className="mt-1 text-sm text-slate-300">Regular price $89</div>
           </div>
-
-          <p className="mt-4 text-sm text-slate-500">
-            For now, this button can keep using your local demo unlock. Later, replace it with Stripe Checkout.
-          </p>
         </div>
 
         <div className="flex flex-col gap-3 border-t border-slate-200 px-6 py-4 sm:flex-row sm:justify-end">
           <button type="button" className="btn btn-secondary" onClick={onClose}>
             Maybe Later
           </button>
-          <button type="button" className="btn btn-primary" onClick={onUnlock}>
-            Continue Demo Unlock
+
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleCheckout}
+            disabled={loading}
+          >
+            {loading ? 'Redirecting...' : 'Buy Premium'}
           </button>
         </div>
       </div>
