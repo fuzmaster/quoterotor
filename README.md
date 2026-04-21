@@ -1,16 +1,95 @@
-# React + Vite
+# QuoteRotor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+QuoteRotor is a React web app for drone operators to quickly create professional client estimates and pressure-test whether a job is actually profitable.
 
-Currently, two official plugins are available:
+It includes two primary workflows:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Builder: create a detailed quote with line items, travel costs, and terms, then export a clean PDF.
+- Profit Check: estimate your true hourly take-home after travel time, editing time, and taxes.
 
-## React Compiler
+## What It Does
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Builds client-ready drone estimates without manual document formatting.
+- Calculates travel using IRS mileage rate (currently $0.67/mile) or a custom flat travel fee.
+- Generates a live PDF preview and downloadable quote document.
+- Provides a profitability calculator with red/green underpricing signal.
+- Persists form data locally in browser storage so work is not lost on refresh.
 
-## Expanding the ESLint configuration
+## Pages
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `/builder`: quote creation form plus live PDF preview/download.
+- `/profit-check`: quick financial reality check for quoting decisions.
+
+## Tech Stack
+
+- React 19
+- Vite 8
+- React Router 7
+- Zustand (with persisted local storage state)
+- @react-pdf/renderer (PDF generation and in-app preview)
+- Tailwind CSS 4 (via Vite plugin)
+
+## Local Development
+
+### Prerequisites
+
+- Node.js 18+ (recommended)
+- npm
+
+### Install
+
+```bash
+npm install
+```
+
+### Run Dev Server
+
+```bash
+npm run dev
+```
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+### Lint
+
+```bash
+npm run lint
+```
+
+## How Pricing Is Calculated
+
+Quote total combines:
+
+- Flight/Shooting fee
+- Editing fee
+- Licensing/Usage fee
+- Add-ons
+- Revision buffer
+- Travel (IRS mileage or custom flat fee)
+
+Profit Check computes:
+
+- Gross hourly = quote / (travel + on-site + editing hours)
+- Net take-home = quote * (1 - tax rate)
+- Take-home hourly = net take-home / total hours
+
+Jobs are flagged as potentially underpriced when take-home hourly is below $30/hour.
+
+## Notes
+
+- This app is currently front-end only (no backend auth or database).
+- Premium behavior in the UI is demo-mode unlock for styling options.
+
+## License
+
+No license file is currently included. Add a LICENSE if you plan to open-source with explicit terms.
