@@ -28,14 +28,17 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'No email found on session' })
     }
 
-    const existing = getPremiumByEmail(email)
+    let existing = await getPremiumByEmail(email)
 
     if (!existing && session.payment_status === 'paid') {
-      grantPremium(email)
+      existing = await grantPremium(email, {
+        stripeSessionId: session.id,
+        paymentStatus: session.payment_status,
+      })
     }
 
     return res.status(200).json({
-      premium: true,
+      premium: !!existing,
       email,
     })
   } catch (error) {

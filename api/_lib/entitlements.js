@@ -1,19 +1,40 @@
-const entitlementStore = globalThis.__quoterotorEntitlements || new Map()
+import Redis from 'ioredis'
 
-if (!globalThis.__quoterotorEntitlements) {
-  globalThis.__quoterotorEntitlements = entitlementStore
+const redis = new Redis(process.env.REDIS_URL)
+
+function normalizeEmail(email) {
+  return String(email || '').trim().toLowerCase()
 }
 
-export function grantPremium(email) {
-  if (!email) return
+function entitlementKey(email) {
+  return `premium:${normalizeEmail(email)}`
+}
 
-  entitlementStore.set(email.toLowerCase(), {
+export async function grantPremium(email, extra = {}) {
+  const normalized = normalizeEmail(email)
+  if (!normalized) return null
+
+  const payload = {
     premium: true,
+    email: normalized,
     grantedAt: new Date().toISOString(),
-  })
+    ...extra,
+  }
+
+  await redis.set(entitlementKey(normalized), JSON.stringify(payload))
+  return payload
 }
 
-export function getPremiumByEmail(email) {
-  if (!email) return null
-  return entitlementStore.get(email.toLowerCase()) || null
+export async function getPremiumByEmail(email) {
+  const normalized = normalizeEmail(email)
+  if (!normalized) return null
+
+  const raw = await redis.get(entitlementKey(normalized))
+  if (!raw) return null
+
+  try {
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
 }

@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import QuoteForm from '../components/QuoteForm'
 import QuotePreview from '../components/QuotePreview'
 import MobilePreviewModal from '../components/MobilePreviewModal'
+import RestorePremiumCard from '../components/RestorePremiumCard'
 import { useAppStore } from '../app/store'
 
 export default function BuilderPage() {
@@ -16,7 +17,11 @@ export default function BuilderPage() {
 
       <main className="mx-auto max-w-7xl px-4 py-8">
         <div className="grid gap-6 xl:grid-cols-[520px_1fr]">
-          <QuoteForm />
+          <div className="grid gap-6">
+            <QuoteForm />
+            {!premiumUnlocked && <RestorePremiumCard />}
+          </div>
+
           <QuotePreview />
         </div>
       </main>

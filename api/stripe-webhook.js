@@ -52,7 +52,10 @@ export default async function handler(req, res) {
         null
 
       if (email) {
-        grantPremium(email)
+        await grantPremium(email, {
+          stripeSessionId: session.id,
+          paymentStatus: session.payment_status || 'paid',
+        })
         console.log(`Premium granted to ${email}`)
       }
     }
