@@ -12,11 +12,11 @@ export default function BuilderPage() {
   const premiumUnlocked = useAppStore((s) => s.premiumUnlocked)
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-24 md:pb-0">
+    <div className="min-h-screen bg-transparent pb-24 md:pb-0">
       <Header />
 
-      <main className="mx-auto max-w-7xl px-4 py-8">
-        <div className="grid gap-6 xl:grid-cols-[520px_1fr]">
+      <main className="mx-auto max-w-7xl px-4 py-8 md:px-6">
+        <div className="grid gap-6 xl:grid-cols-[560px_1fr]">
           <div className="grid gap-6">
             <QuoteForm />
             {!premiumUnlocked && <RestorePremiumCard />}
@@ -26,7 +26,7 @@ export default function BuilderPage() {
         </div>
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white p-4 md:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-4 backdrop-blur md:hidden">
         <button
           type="button"
           className="btn btn-primary w-full"

@@ -1,5 +1,6 @@
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 import QuoteDocument from '../pdf/QuoteDocument'
+import { isQuoteValid } from '../utils/validation'
 
 export default function MobilePreviewModal({
   isOpen,
@@ -8,6 +9,8 @@ export default function MobilePreviewModal({
   premiumUnlocked,
 }) {
   if (!isOpen) return null
+
+  const valid = isQuoteValid(quote)
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 md:hidden">
@@ -23,7 +26,13 @@ export default function MobilePreviewModal({
           </button>
         </div>
 
-        <div className="flex-1 bg-slate-100">
+        <div className="relative flex-1 bg-slate-100">
+          {!valid && (
+            <div className="absolute inset-x-4 top-4 z-10 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 shadow-sm">
+              Complete the required fields before exporting the PDF.
+            </div>
+          )}
+
           <PDFViewer width="100%" height="100%" showToolbar={false}>
             <QuoteDocument quote={quote} premiumUnlocked={premiumUnlocked} />
           </PDFViewer>
@@ -33,9 +42,11 @@ export default function MobilePreviewModal({
           <PDFDownloadLink
             document={<QuoteDocument quote={quote} premiumUnlocked={premiumUnlocked} />}
             fileName="quoterotor-estimate.pdf"
-            className="btn btn-primary w-full"
+            className={`btn w-full ${valid ? 'btn-primary' : 'btn-secondary pointer-events-none opacity-60'}`}
           >
-            {({ loading }) => (loading ? 'Preparing PDF...' : 'Download PDF')}
+            {({ loading }) =>
+              loading ? 'Preparing PDF...' : valid ? 'Download PDF' : 'Form Incomplete'
+            }
           </PDFDownloadLink>
         </div>
       </div>

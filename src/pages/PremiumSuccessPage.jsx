@@ -40,31 +40,45 @@ export default function PremiumSuccessPage() {
   }, [sessionId, setPremiumUnlocked])
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-transparent">
       <Header />
-      <main className="mx-auto max-w-3xl px-4 py-12">
-        <div className="card p-8">
+      <main className="mx-auto max-w-5xl px-4 py-12">
+        <div className="hero-shell mx-auto max-w-3xl">
           {status === 'loading' && (
             <>
-              <h1 className="text-2xl font-bold text-slate-900">Activating premium...</h1>
-              <p className="mt-2 text-slate-600">We’re confirming your payment.</p>
+              <div className="stat-pill">Verifying purchase</div>
+              <h1 className="mt-4 text-4xl font-black tracking-tight text-slate-950">
+                Activating premium...
+              </h1>
+              <p className="mt-3 text-base text-slate-600">
+                We’re confirming your Stripe payment now.
+              </p>
             </>
           )}
 
           {status === 'success' && (
             <>
-              <h1 className="text-2xl font-bold text-slate-900">Premium unlocked</h1>
-              <p className="mt-2 text-slate-600">
-                Your QuoteRotor premium features are now active.
+              <div className="success-badge">Premium unlocked</div>
+              <h1 className="mt-4 text-4xl font-black tracking-tight text-slate-950">
+                Your premium features are active
+              </h1>
+              <p className="mt-3 text-base leading-7 text-slate-600">
+                Your QuoteRotor account is unlocked on this device and ready for
+                branded quotes.
               </p>
+
               {email && (
-                <p className="mt-2 text-sm text-slate-500">
+                <div className="mt-5 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-sm text-slate-700">
                   Purchase confirmed for <strong>{email}</strong>
-                </p>
+                </div>
               )}
-              <div className="mt-6">
+
+              <div className="mt-6 flex flex-wrap gap-3">
                 <Link to="/builder" className="btn btn-primary">
                   Return to Builder
+                </Link>
+                <Link to="/profit-check" className="btn btn-secondary">
+                  Back to Profit Check
                 </Link>
               </div>
             </>
@@ -72,10 +86,17 @@ export default function PremiumSuccessPage() {
 
           {status === 'error' && (
             <>
-              <h1 className="text-2xl font-bold text-slate-900">We couldn’t verify your purchase</h1>
-              <p className="mt-2 text-slate-600">
-                Your payment may still have gone through, but the app could not confirm it yet.
+              <div className="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+                Verification issue
+              </div>
+              <h1 className="mt-4 text-4xl font-black tracking-tight text-slate-950">
+                We couldn’t confirm your purchase
+              </h1>
+              <p className="mt-3 text-base text-slate-600">
+                Your payment may still have gone through. Head back to the builder
+                and use Restore Premium with your purchase email.
               </p>
+
               <div className="mt-6">
                 <Link to="/builder" className="btn btn-secondary">
                   Back to Builder

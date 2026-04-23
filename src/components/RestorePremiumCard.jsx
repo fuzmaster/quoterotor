@@ -38,16 +38,21 @@ export default function RestorePremiumCard() {
   }
 
   return (
-    <div className="card p-6">
-      <h2 className="text-lg font-bold text-slate-900">Already purchased?</h2>
-      <p className="mt-1 text-sm text-slate-600">
-        Restore premium on this device using the email from your purchase.
-      </p>
+    <div className="card overflow-hidden">
+      <div className="border-b border-slate-200 bg-slate-50 px-6 py-4">
+        <div className="text-lg font-black text-slate-950">Already purchased?</div>
+        <p className="mt-1 text-sm text-slate-600">
+          Restore premium on this device using the same email you used during checkout.
+        </p>
+      </div>
 
-      <form className="mt-4 grid gap-3" onSubmit={handleRestore}>
+      <form className="grid gap-4 p-6" onSubmit={handleRestore}>
         <div>
-          <label className="label">Purchase Email</label>
+          <label className="label" htmlFor="restore-email">
+            Purchase Email
+          </label>
           <input
+            id="restore-email"
             className="input"
             type="email"
             value={email}
@@ -63,7 +68,7 @@ export default function RestorePremiumCard() {
 
         {message ? (
           <p
-            className={`text-sm ${
+            className={`text-sm font-medium ${
               status === 'success' ? 'text-emerald-700' : 'text-red-600'
             }`}
           >
